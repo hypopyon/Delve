@@ -89,4 +89,17 @@ public class Tile {
         }
         return new Result<Direction>(new InvalidOperationException());
     }
+
+    public Result<Tile> GetAdjacent(Direction dir) {
+        if (!Valid)
+            return new Result<Tile>(new InvalidOperationException());
+        var (adjacentX, adjacentY) = dir switch {
+            Direction.Right => (X + 1, Y),
+            Direction.Down => (X, Y + 1),
+            Direction.Left => (X - 1, Y),
+            Direction.Up => (X, Y - 1),
+            _ => throw new ArgumentOutOfRangeException(nameof(dir), dir, null)
+        };
+        return map.GetTile(adjacentX, adjacentY);
+    }
 }

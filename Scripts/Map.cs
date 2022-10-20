@@ -8,6 +8,8 @@ public partial class Map : Node2D {
     const int WIDTH = 13;
     const int CENTER = 6;
     const uint INITIAL_HEIGHT = 13;
+    const int TILE_WIDTH = 112;
+    const int TILE_HEIGHT = 112;
     
     Tile[,] tiles;
     public int LeftBound => -CENTER;
@@ -25,6 +27,22 @@ public partial class Map : Node2D {
         for (var i = 0; i < WIDTH; i++)
         for (uint j = 0; j < INITIAL_HEIGHT; j++)
             tiles[i, j] = new Tile(this, i - CENTER, j);
+        {
+            Tile? lastTile = null;
+            for (var i = LeftBound; i <= RightBound; i++) {
+                var tile = GetTile(i, 0).Value;
+                tile.Room = new Cavern();
+                if (lastTile is not null) tile.Connect(lastTile);
+                lastTile = tile;
+            }
+        }
+        {
+            var tile = GetTile(0, 0).Value;
+            tile.Room = new Entrance();
+        }
+    }
+    
+    public override void _Ready() {
     }
 
     public void ExpandDownwards(uint amount = 1) {
@@ -47,20 +65,5 @@ public partial class Map : Node2D {
         if (adjustedX is < 0 or >= WIDTH || y > BottomBound)
             return new Result<Tile>(new IndexOutOfRangeException());
         return tiles[adjustedX, y];
-    }
-
-    public override void _Ready() {
-        Tile? lastTile = null;
-        for (var i = LeftBound; i <= RightBound; i++) {
-            var tile = GetTile(i, 0).Value;
-            tile.Room = new Cavern();
-            if (lastTile is not null) tile.Connect(lastTile);
-            lastTile = tile;
-        }
-
-        {
-            var tile = GetTile(0, 0).Value;
-            tile.Room = new Entrance();
-        }
     }
 }
