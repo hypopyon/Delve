@@ -14,4 +14,10 @@
   <ItemGroup>
     <PackageReference Include="DotNext" Version="4.7.2" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Scripts\Rooms\Buildings" />
+    <Folder Include="Scripts\Rooms\NaturalFormations" />
+    <Folder Include="Scripts\Rooms\Remnants" />
+    <Folder Include="Scripts\Rooms\Wyrd" />
+  </ItemGroup>
 </Project>

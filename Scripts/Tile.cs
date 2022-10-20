@@ -4,10 +4,10 @@ using DotNext;
 namespace Delve; 
 
 public class Tile {
-    private readonly Map map;
+    readonly Map map;
     public readonly int X;
     public readonly uint Y;
-    public bool Valid {
+    bool Valid {
         get {
             var tile = map.GetTile(X, Y);
             return tile ? tile.Value == this : false;
@@ -21,7 +21,7 @@ public class Tile {
 
     public Tile(Map map, int x, uint y) {
         this.map = map;
-        if (X < map.LeftBound || X > map.RightBound)
+        if (X < Map.LeftBound || X > Map.RightBound)
             throw new ArgumentOutOfRangeException(nameof(x));
         X = x;
         if (Y > map.BottomBound)

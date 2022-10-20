@@ -1,32 +1,37 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using Delve.Rooms;
 using DotNext;
 
 namespace Delve;
 public partial class Map : Node2D {
-    const int WIDTH = 13;
-    const int CENTER = 6;
-    const uint INITIAL_HEIGHT = 13;
-    const int TILE_WIDTH = 112;
-    const int TILE_HEIGHT = 112;
-    
-    Tile[,] tiles;
-    public int LeftBound => -CENTER;
-    public int RightBound => CENTER;
+    const int Width = 13;
+    const int Center = 6;
+    const uint InitialHeight = 13;
+    const int TileWidth = 112;
+    const int TileHeight = 112;
     public const uint TopBound = 0;
-    public uint BottomBound => Convert.ToUInt32(tiles.GetLength(1) - 1);
+    public const int LeftBound = -Center;
+    public const int RightBound = Center;
+    
+    static int ConnectorOffset => (TileWidth - Textures.Connector.GetWidth()) / 2;
 
+    Tile[,] tiles;
     int? selectX, selectAdjacentX;
     uint? selectY, selectAdjacentY;
     Direction? selectAdjacentDir;
+    List<bool> rowEffects;
+    bool[] columnEffects;
     
 
+    public uint BottomBound => Convert.ToUInt32(tiles.GetLength(1) - 1);
+
     public Map() {
-        tiles = new Tile[WIDTH, INITIAL_HEIGHT];
-        for (var i = 0; i < WIDTH; i++)
-        for (uint j = 0; j < INITIAL_HEIGHT; j++)
-            tiles[i, j] = new Tile(this, i - CENTER, j);
+        tiles = new Tile[Width, InitialHeight];
+        for (var i = 0; i < Width; i++)
+        for (uint j = 0; j < InitialHeight; j++)
+            tiles[i, j] = new Tile(this, i - Center, j);
         {
             Tile? lastTile = null;
             for (var i = LeftBound; i <= RightBound; i++) {
@@ -36,10 +41,8 @@ public partial class Map : Node2D {
                 lastTile = tile;
             }
         }
-        {
-            var tile = GetTile(0, 0).Value;
-            tile.Room = new Entrance();
-        }
+        var entrance = GetTile(0, 0).Value;
+        entrance.Room = new Entrance();
     }
     
     public override void _Ready() {
@@ -50,8 +53,8 @@ public partial class Map : Node2D {
             throw new ArgumentOutOfRangeException();
         var oldHeight = tiles.GetLength(1);
         var newHeight = oldHeight + amount;
-        var newTiles = new Tile[WIDTH, newHeight];
-        for (var i = 0; i < WIDTH; i++) {
+        var newTiles = new Tile[Width, newHeight];
+        for (var i = 0; i < Width; i++) {
             for (var j = 0; j < oldHeight; j++)
                 newTiles[i, j] = tiles[i, j];
             for (var j = oldHeight; j < newHeight; j++)
@@ -61,8 +64,8 @@ public partial class Map : Node2D {
     }
 
     public Result<Tile> GetTile(int x, uint y) {
-        var adjustedX = x + CENTER;
-        if (adjustedX is < 0 or >= WIDTH || y > BottomBound)
+        var adjustedX = x + Center;
+        if (adjustedX is < 0 or >= Width || y > BottomBound)
             return new Result<Tile>(new IndexOutOfRangeException());
         return tiles[adjustedX, y];
     }
