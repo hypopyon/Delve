@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://tl7w84d54rxd"]
+
+[ext_resource type="Script" path="res://Scripts/Map.cs" id="1_7sjbj"]
+
+[node name="Map" type="Node2D"]
+script = ExtResource("1_7sjbj")
