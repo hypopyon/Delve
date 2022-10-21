@@ -1,10 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://bt7p74vyk8d3g"]
+[gd_scene load_steps=5 format=3 uid="uid://bt7p74vyk8d3g"]
 
 [ext_resource type="PackedScene" uid="uid://tl7w84d54rxd" path="res://Scenes/Map.tscn" id="1_p1qvl"]
-[ext_resource type="PackedScene" path="res://Scenes/Player.tscn" id="2_iky8m"]
+[ext_resource type="Script" path="res://Scripts/Main.cs" id="1_y3opj"]
+[ext_resource type="PackedScene" uid="uid://bfm6w3w772yk4" path="res://Scenes/Player.tscn" id="2_iky8m"]
+[ext_resource type="PackedScene" uid="uid://3xkabvmkd0gu" path="res://Scenes/UILayer.tscn" id="3_78h50"]
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Node"]
+script = ExtResource("1_y3opj")
 
 [node name="Map" parent="." instance=ExtResource("1_p1qvl")]
 
 [node name="Player" parent="." instance=ExtResource("2_iky8m")]
+
+[node name="UILayer" parent="." instance=ExtResource("3_78h50")]

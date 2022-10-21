@@ -5,6 +5,7 @@ using Delve;
 namespace Delve;
 
 public partial class Player : Node2D {
+
     public override void _Process(double delta) {
         var moveUp = Input.IsActionPressed(Actions.MoveUp);
         var moveDown = Input.IsActionPressed(Actions.MoveDown);
@@ -21,6 +22,7 @@ public partial class Player : Node2D {
         else if (moveUp && !moveDown)
             moveVector.y = -1;
 
-        Position += moveVector;
+        if (moveVector != Vector2.Zero)
+            Position += moveVector;
     }
 }
