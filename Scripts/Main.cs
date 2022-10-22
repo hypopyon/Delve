@@ -35,6 +35,5 @@ public partial class Main : Node {
 			label.Text = tradeGoods.ToString();
 			label.QueueRedraw();
 		} }
-		GD.Print(map.GetTile(0, 0));
 	}
 }

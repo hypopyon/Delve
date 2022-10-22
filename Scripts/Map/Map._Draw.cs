@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection.Metadata;
 using Delve.Rooms;
 using Godot;
 
@@ -13,6 +14,7 @@ public partial class Map : Node2D {
         for (var i = LeftBound; i <= RightBound; i++)
         for (var j = TopBound; j <= BottomBound; j++)
             DrawTile(i, j);
+        
     }
 
     void DrawConnectors(int x, uint y) {
@@ -20,23 +22,33 @@ public partial class Map : Node2D {
         if (!getResult.IsSuccessful)
             throw new InvalidOperationException();
         var tile = getResult.Value;
-        var size = Textures.Connector.GetSize();
-        var pos = new Vector2(x * TileWidth, y * TileHeight);
-        if (tile.Connectors.Right)
-            DrawTexture(Textures.Connector, pos + new Vector2(ConnectorOffset, 0) - size / 2);
+        var originOffset = new Vector2(0, Textures.Connector.GetSize().y / 2);
+        var pos = new Vector2(x * SpacedTileWidth, y * SpacedTileHeight);
+        if (tile.Connectors.Right) {
+            DrawSetTransform(
+                pos + (new Vector2(ConnectorOffsetX, 0) - originOffset) * TextureScale
+                , 0, TextureScale);
+            DrawTexture(Textures.Connector, Vector2.Zero);
+        }
         if (tile.Connectors.Up) {
             var angle = -Mathf.Pi / 2;
-            DrawSetTransform(pos + new Vector2(0, -ConnectorOffset) - size.Rotated(angle) / 2, angle);
+            DrawSetTransform(
+                pos + (new Vector2(0, -ConnectorOffsetY) - originOffset.Rotated(angle)) * TextureScale,
+                angle, TextureScale);
             DrawTexture(Textures.Connector, Vector2.Zero);
         }
         if (tile.Connectors.Left) {
             var angle = Mathf.Pi;
-            DrawSetTransform(pos + new Vector2(-ConnectorOffset, 0) - size.Rotated(angle) / 2, angle);
+            DrawSetTransform(
+                pos + (new Vector2(-ConnectorOffsetX, 0) - originOffset.Rotated(angle)) * TextureScale,
+                angle, TextureScale);
             DrawTexture(Textures.Connector, Vector2.Zero);
         }
         if (tile.Connectors.Down) {
             var angle = Mathf.Pi / 2;
-            DrawSetTransform(pos + new Vector2(0, ConnectorOffset) - size.Rotated(angle) / 2, angle);
+            DrawSetTransform(
+                pos + (new Vector2(0, ConnectorOffsetY) - originOffset.Rotated(angle)) * TextureScale,
+                angle, TextureScale);
             DrawTexture(Textures.Connector, Vector2.Zero);
         }
         DrawSetTransform(Vector2.Zero);
@@ -47,27 +59,48 @@ public partial class Map : Node2D {
         if (!getResult.IsSuccessful)
             throw new InvalidOperationException();
         var tile = getResult.Value;
+        var texture = tile.Room is not null ? tile.Room.Texture : Textures.Tiles.Unexplored;
+        var pos = new Vector2(x * SpacedTileWidth, y * SpacedTileHeight);
+        DrawSetTransform(pos - texture.GetSize() / 2 * TextureScale, 0, TextureScale);
+        DrawTexture(texture, Vector2.Zero);
+        DrawSetTransform(Vector2.Zero);
         if (tile.Room is not null) {
-            var texture = tile.Room.Texture;
-            var pos = new Vector2(x * TileWidth, y * TileHeight);
-            DrawTexture(texture, pos - texture.GetSize() / 2);
-            var stringSize = Fonts.Main.GetStringSize(tile.Room.Name);
-            DrawString(Fonts.Main, pos - new Vector2(stringSize.x, -stringSize.y) / 2, tile.Room.Name, modulate: Colors.Fuchsia);
+            var font = Fonts.Mono;
+            var actualHeightRatio = Fonts.MonoActualHeightRatio;
+            var fontSize = 16;
+            var stringSize = font.GetStringSize(tile.Room.Name, fontSize: fontSize);
+            GD.Print(stringSize.y + " " + font.GetAscent(fontSize) + " " + font.GetDescent(fontSize));
+            stringSize.y = Mathf.Floor(fontSize * actualHeightRatio);
+            DrawCircle(pos, 8, Colors.Blue);
+            DrawString(
+                font,
+                pos + new Vector2(-stringSize.x / 2, stringSize.y / 2),
+                tile.Room.Name,
+                modulate: Colors.Fuchsia,
+                fontSize: fontSize);
+            
+            this.DrawStringZoomCorrected(
+                font,
+                pos + new Vector2(-stringSize.x / 2, stringSize.y / 2),
+                tile.Room.Name,
+                modulate: Colors.White,
+                fontSize: fontSize,
+                hAlign: HorizontalAlignment.Center);
         }
     }
     
     void DrawSelection() {
         if (selectX is null || selectY is null) return;
         var selectRelativeWorldPosition = new Vector2(
-            (selectX.Value - .5f) * TileWidth,
-            (selectY.Value - .5f) * TileHeight);
-        DrawRect(new Rect2(selectRelativeWorldPosition, TileWidth, TileHeight), Colors.Red, true);
+            (selectX.Value - .5f) * SpacedTileWidth,
+            (selectY.Value - .5f) * SpacedTileHeight);
+        DrawRect(new Rect2(selectRelativeWorldPosition, SpacedTileWidth, SpacedTileHeight), Colors.Red, true);
 
         if (selectAdjacentX is not null && selectAdjacentY is not null) {
             var selectAdjacentRelativeWorldPosition = new Vector2(
-                (selectAdjacentX.Value - .5f) * TileWidth,
-                (selectAdjacentY.Value - .5f) * TileHeight);
-            DrawRect(new Rect2(selectAdjacentRelativeWorldPosition, 112, 112), Colors.Green, true);
+                (selectAdjacentX.Value - .5f) * SpacedTileWidth,
+                (selectAdjacentY.Value - .5f) * SpacedTileHeight);
+            DrawRect(new Rect2(selectAdjacentRelativeWorldPosition, SpacedTileWidth, SpacedTileHeight), Colors.Green, true);
         }
     }
 }

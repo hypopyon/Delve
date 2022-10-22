@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Xml.Serialization;
 using DotNext;
+using Godot;
 
 namespace Delve; 
 
@@ -17,6 +19,7 @@ public class Tile {
     public bool Empty => Room == null;
 
     public Connectors Connectors;
+
     public Room? Room;
 
     public Tile(Map map, int x, uint y) {
@@ -30,43 +33,43 @@ public class Tile {
         Connectors = new Connectors();
     }
 
-    public bool Connect(Tile other) {
+    public Result Connect(Tile other) {
         var check = CheckConnectable(other);
-        if (!check.IsSuccessful) return false;
+        if (!check.IsSuccessful) return new Result(check.Error);
         switch (check.Value) {
             case Direction.Right:
                 if (Connectors.Right && other.Connectors.Left)
-                    return false;
+                    return Result.Failure;
                 Connectors.Right = true;
                 other.Connectors.Left = true;
                 break;
             case Direction.Up:
                 if (Connectors.Up && other.Connectors.Down)
-                    return false;
+                    return Result.Failure;
                 Connectors.Up = true;
                 other.Connectors.Down = true;
                 break;
             case Direction.Left:
                 if (Connectors.Left && other.Connectors.Right)
-                    return false;
+                    return Result.Failure;
                 Connectors.Left = true;
                 other.Connectors.Right = true;
                 break;
             case Direction.Down:
                 if (Connectors.Down && other.Connectors.Up)
-                    return false;
+                    return Result.Failure;
                 Connectors.Down = true;
                 other.Connectors.Up = true;
                 break;
             default:
-                throw new ArgumentOutOfRangeException(nameof(other));
+                return Result.FromError(new ArgumentOutOfRangeException(nameof(other)));
         }
-        return true;
+        return Result.Success;
     }
 
     public Result<Direction> CheckConnectable(Tile other) {
         if (this == other)
-            return new Result<Direction>(new ArgumentException(null, nameof(other)));
+            return new (new ArgumentException(null, nameof(other)));
         if (!Valid || !other.Valid)
             return new Result<Direction>(new InvalidOperationException());
         if (Room is null || other.Room is null)

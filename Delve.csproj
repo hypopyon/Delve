@@ -4,6 +4,7 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
+    <EnablePreviewFeatures>true</EnablePreviewFeatures>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Rooms\**" />
@@ -15,6 +16,7 @@
     <PackageReference Include="DotNext" Version="4.7.2" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Scenes" />
     <Folder Include="Scripts\Rooms\Buildings" />
     <Folder Include="Scripts\Rooms\NaturalFormations" />
     <Folder Include="Scripts\Rooms\Remnants" />

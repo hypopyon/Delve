@@ -3,4 +3,5 @@
 [ext_resource type="Script" path="res://Scripts/Map.cs" id="1_7sjbj"]
 
 [node name="Map" type="Node2D"]
+texture_filter = 1
 script = ExtResource("1_7sjbj")

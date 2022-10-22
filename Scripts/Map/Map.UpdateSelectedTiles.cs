@@ -7,18 +7,18 @@ namespace Delve;
 public partial class Map : Node2D {
     void UpdateSelectedTiles() {
         var mousePos = GetLocalMousePosition();
-        var nearestTileX = Mathf.Round(mousePos.x / TileWidth);
+        var nearestTileX = Mathf.Round(mousePos.x / SpacedTileWidth);
         if (nearestTileX >= LeftBound && nearestTileX <= RightBound)
             selectX = Convert.ToInt32(nearestTileX);
         else selectX = null;
-        var nearestTileY = MathF.Round(mousePos.y / TileHeight);
+        var nearestTileY = MathF.Round(mousePos.y / SpacedTileHeight);
         
         if (nearestTileY >= TopBound && nearestTileY <= BottomBound + 1)
             selectY = Convert.ToUInt32(nearestTileY);
         else selectY = null;
 
         if (selectX is not null && selectY is not null) {
-            var selectWorldPosition = new Vector2(nearestTileX * TileWidth, nearestTileY * TileHeight);
+            var selectWorldPosition = new Vector2(nearestTileX * SpacedTileWidth, nearestTileY * SpacedTileHeight);
             var angle = selectWorldPosition.AngleToPoint(mousePos);
             var dir = (Mathf.Round(angle / (Mathf.Pi / 2) + 2) % 4) switch {
                 0 => Direction.Right,
