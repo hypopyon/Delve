@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://bhmibuv7j2u7u"
-path="res://.godot/imported/Arial.ttf-80fd904f92b2d0a00e3a439c3e24d2a4.fontdata"
+uid="uid://gdt7i2pbqpn8"
+path="res://.godot/imported/JetBrainsMono.ttf-6a8117091384302417a4d650b7ffabdb.fontdata"
 
 [deps]
 
-source_file="res://Fonts/Arial.ttf"
-dest_files=["res://.godot/imported/Arial.ttf-80fd904f92b2d0a00e3a439c3e24d2a4.fontdata"]
+source_file="res://Fonts/JetBrainsMono.ttf"
+dest_files=["res://.godot/imported/JetBrainsMono.ttf-6a8117091384302417a4d650b7ffabdb.fontdata"]
 
 [params]
 

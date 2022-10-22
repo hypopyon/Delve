@@ -69,15 +69,7 @@ public partial class Map : Node2D {
             var actualHeightRatio = Fonts.MonoActualHeightRatio;
             var fontSize = 16;
             var stringSize = font.GetStringSize(tile.Room.Name, fontSize: fontSize);
-            GD.Print(stringSize.y + " " + font.GetAscent(fontSize) + " " + font.GetDescent(fontSize));
             stringSize.y = Mathf.Floor(fontSize * actualHeightRatio);
-            DrawCircle(pos, 8, Colors.Blue);
-            DrawString(
-                font,
-                pos + new Vector2(-stringSize.x / 2, stringSize.y / 2),
-                tile.Room.Name,
-                modulate: Colors.Fuchsia,
-                fontSize: fontSize);
             
             this.DrawStringZoomCorrected(
                 font,

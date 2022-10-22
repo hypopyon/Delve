@@ -24,7 +24,7 @@ public static class CanvasItemExtensions {
     ) {
         var intSize = Math.Max(Mathf.FloorToInt(fontSize), 1);
         if (intSize > 16)
-            intSize = Mathf.CeilToInt(intSize / 16f) * 16;
+            intSize = Mathf.RoundToInt(Mathf.Pow(2, Mathf.Ceil(Mathf.Log(intSize) / Mathf.Log(2))));
         var transform = Transform2D.Identity
             .Scaled(fontSize / intSize * Vector2.One * scale)
             .Rotated(angle)
@@ -37,7 +37,11 @@ public static class CanvasItemExtensions {
             text,
             hAlign,
             width,
-            Mathf.RoundToInt(intSize), modulate, justFlag, direction, orientation);
+            Mathf.RoundToInt(intSize),
+            modulate,
+            justFlag,
+            direction,
+            orientation);
         canvasItem.DrawSetTransform(Vector2.Zero);
     }
     

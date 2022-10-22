@@ -16,8 +16,8 @@ public static class Textures {
 public static class Fonts {
     // To find actual height ratios, use an image editor to test height of power of 2 font sizes.
     // Divide height by fontSize. When using ratio, floor to nearest int value
-    public static readonly FontFile Main = (FontFile)GD.Load("res://Fonts/arial.ttf");
+    public static readonly FontFile Main = (FontFile)GD.Load("res://Fonts/Arial.ttf");
     public const float MainActualHeightRatio = 0.71875f;
-    public static readonly FontFile Mono = (FontFile)GD.Load("res://Fonts/JetBrainsMono-Regular.ttf");
+    public static readonly FontFile Mono = (FontFile)GD.Load("res://Fonts/JetBrainsMono.ttf");
     public const float MonoActualHeightRatio = 0.734375f;
 }

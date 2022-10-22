@@ -8,15 +8,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Rooms\**" />
+    <Compile Remove="Scenes\**" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Rooms\**" />
+    <EmbeddedResource Remove="Scenes\**" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DotNext" Version="4.7.2" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Scenes" />
     <Folder Include="Scripts\Rooms\Buildings" />
     <Folder Include="Scripts\Rooms\NaturalFormations" />
     <Folder Include="Scripts\Rooms\Remnants" />

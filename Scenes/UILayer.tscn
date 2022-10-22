@@ -17,7 +17,6 @@ theme_override_constants/margin_right = 40
 theme_override_constants/margin_bottom = 40
 
 [node name="Inventory" type="HBoxContainer" parent="MainMargins"]
-layout_mode = 2
 offset_left = 40.0
 offset_top = 40.0
 offset_right = 308.0
@@ -26,14 +25,12 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 
 [node name="Resources" type="HBoxContainer" parent="MainMargins/Inventory"]
-layout_mode = 2
 offset_right = 132.0
 offset_bottom = 64.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
 [node name="TextureRect" type="TextureRect" parent="MainMargins/Inventory/Resources"]
-layout_mode = 2
 offset_right = 64.0
 offset_bottom = 64.0
 size_flags_horizontal = 0
@@ -42,7 +39,6 @@ texture = ExtResource("1_iesgb")
 
 [node name="Label" type="Label" parent="MainMargins/Inventory/Resources"]
 custom_minimum_size = Vector2i(64, 0)
-layout_mode = 2
 offset_left = 68.0
 offset_top = 19.0
 offset_right = 132.0
@@ -53,7 +49,6 @@ vertical_alignment = 1
 text_overrun_behavior = 1
 
 [node name="TradeGoods" type="HBoxContainer" parent="MainMargins/Inventory"]
-layout_mode = 2
 offset_left = 136.0
 offset_right = 268.0
 offset_bottom = 64.0
@@ -61,7 +56,6 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 
 [node name="TextureRect2" type="TextureRect" parent="MainMargins/Inventory/TradeGoods"]
-layout_mode = 2
 offset_right = 64.0
 offset_bottom = 64.0
 size_flags_horizontal = 0
@@ -70,7 +64,6 @@ texture = ExtResource("2_2kfrd")
 
 [node name="Label" type="Label" parent="MainMargins/Inventory/TradeGoods"]
 custom_minimum_size = Vector2i(64, 0)
-layout_mode = 2
 offset_left = 68.0
 offset_top = 19.0
 offset_right = 132.0
