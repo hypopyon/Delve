@@ -1,16 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://3xkabvmkd0gu"]
+[gd_scene load_steps=4 format=3 uid="uid://ckjfxmttre0qm"]
 
-[ext_resource type="Texture2D" uid="uid://28qyymr3hvxm" path="res://Textures/Interface/Heart.png" id="1_iesgb"]
-[ext_resource type="Texture2D" uid="uid://dlt40pqaty7oa" path="res://Textures/Interface/Diamond.png" id="2_2kfrd"]
+[ext_resource type="Script" path="res://Scripts/Interface.cs" id="1_5rk51"]
+[ext_resource type="Texture2D" uid="uid://28qyymr3hvxm" path="res://Textures/Interface/Heart.png" id="1_kwmv1"]
+[ext_resource type="Texture2D" uid="uid://dlt40pqaty7oa" path="res://Textures/Interface/Diamond.png" id="2_i3fmk"]
 
-[node name="UILayer" type="CanvasLayer"]
+[node name="Interface" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 1
+script = ExtResource("1_5rk51")
 
 [node name="MainMargins" type="MarginContainer" parent="."]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_right = 348.0
+offset_bottom = 144.0
 theme_override_constants/margin_left = 40
 theme_override_constants/margin_top = 40
 theme_override_constants/margin_right = 40
@@ -35,7 +37,7 @@ offset_right = 64.0
 offset_bottom = 64.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
-texture = ExtResource("1_iesgb")
+texture = ExtResource("1_kwmv1")
 
 [node name="Label" type="Label" parent="MainMargins/Inventory/Resources"]
 custom_minimum_size = Vector2i(64, 0)
@@ -60,7 +62,7 @@ offset_right = 64.0
 offset_bottom = 64.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
-texture = ExtResource("2_2kfrd")
+texture = ExtResource("2_i3fmk")
 
 [node name="Label" type="Label" parent="MainMargins/Inventory/TradeGoods"]
 custom_minimum_size = Vector2i(64, 0)

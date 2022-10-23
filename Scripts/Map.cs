@@ -9,7 +9,7 @@ public partial class Map : Node2D {
     const int Width = 13;
     const int Center = 6;
     const uint InitialHeight = 13;
-    const int ConnectorTextureWidth = 16;
+    const int ConnectorTextureWidth = 8;
     const int TileTextureWidth = 80;
     const int TileTextureHeight = 48;
     public const int SpacedTileWidth = (TileTextureWidth + ConnectorTextureWidth * 2) * TextureScaleFactor;
@@ -26,8 +26,6 @@ public partial class Map : Node2D {
     int? selectX, selectAdjacentX;
     uint? selectY, selectAdjacentY;
     //Direction? selectAdjacentDir;
-    List<bool> rowEffects = new();
-    bool[] columnEffects= Array.Empty<bool>();
     
 
     public uint BottomBound => Convert.ToUInt32(tiles.GetLength(1) - 1);

@@ -14,6 +14,8 @@ public static class CanvasItemExtensions {
         HorizontalAlignment hAlign = HorizontalAlignment.Left,
         float width = -1F,
         float fontSize = 16,
+        int minAdjustedFontSize = 1,
+        int maxAdjustedFontSize = 64,
         Color? modulate = null,
         TextServer.JustificationFlag justFlag
             = TextServer.JustificationFlag.Kashida
@@ -24,9 +26,10 @@ public static class CanvasItemExtensions {
     ) {
         var intSize = Math.Max(Mathf.FloorToInt(fontSize), 1);
         if (intSize > 16)
-            intSize = Mathf.RoundToInt(Mathf.Pow(2, Mathf.Ceil(Mathf.Log(intSize) / Mathf.Log(2))));
+            intSize = Mathf.RoundToInt(Mathf.Pow(2, Mathf.Ceil(Mathf.Log(fontSize) / Mathf.Log(2))));
+        intSize = Math.Clamp(intSize, minAdjustedFontSize, maxAdjustedFontSize);
         var transform = Transform2D.Identity
-            .Scaled(fontSize / intSize * Vector2.One * scale)
+            .Scaled(fontSize / intSize * scale)
             .Rotated(angle)
             .Translated(pos);
         
@@ -54,6 +57,8 @@ public static class CanvasItemExtensions {
         HorizontalAlignment hAlign = HorizontalAlignment.Left,
         float width = -1F,
         float fontSize = 16,
+        int minAdjustedFontSize = 1,
+        int maxAdjustedFontSize = 64,
         Color? modulate = null,
         TextServer.JustificationFlag justFlag
             = TextServer.JustificationFlag.Kashida
@@ -73,6 +78,8 @@ public static class CanvasItemExtensions {
             hAlign,
             width,
             fontSize * zoomFactor,
+            minAdjustedFontSize,
+            maxAdjustedFontSize,
             modulate,
             justFlag,
             direction,

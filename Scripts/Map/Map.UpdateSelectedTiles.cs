@@ -6,12 +6,21 @@ namespace Delve;
 
 public partial class Map : Node2D {
     void UpdateSelectedTiles() {
-        var mousePos = GetLocalMousePosition();
-        var nearestTileX = Mathf.Round(mousePos.x / SpacedTileWidth);
+        var viewport = GetViewport();
+        var camera = viewport.GetCamera2d();
+        var visibleRect = viewport.GetVisibleRect();
+        var worldMousePos = camera.AnchorMode switch {
+            Camera2D.AnchorModeEnum.FixedTopLeft => viewport.GetMousePosition(),
+            Camera2D.AnchorModeEnum.DragCenter => viewport.GetMousePosition() - visibleRect.Size / 2,
+            _ => throw new ArgumentOutOfRangeException()
+        } / camera.Zoom + camera.GlobalPosition;
+        var relativeWorldMousePos = worldMousePos - Position;
+        
+        var nearestTileX = Mathf.Round(relativeWorldMousePos.x / SpacedTileWidth);
         if (nearestTileX >= LeftBound && nearestTileX <= RightBound)
             selectX = Convert.ToInt32(nearestTileX);
         else selectX = null;
-        var nearestTileY = MathF.Round(mousePos.y / SpacedTileHeight);
+        var nearestTileY = MathF.Round(relativeWorldMousePos.y / SpacedTileHeight);
         
         if (nearestTileY >= TopBound && nearestTileY <= BottomBound + 1)
             selectY = Convert.ToUInt32(nearestTileY);
@@ -19,7 +28,7 @@ public partial class Map : Node2D {
 
         if (selectX is not null && selectY is not null) {
             var selectWorldPosition = new Vector2(nearestTileX * SpacedTileWidth, nearestTileY * SpacedTileHeight);
-            var angle = selectWorldPosition.AngleToPoint(mousePos);
+            var angle = selectWorldPosition.AngleToPoint(relativeWorldMousePos);
             var dir = (Mathf.Round(angle / (Mathf.Pi / 2) + 2) % 4) switch {
                 0 => Direction.Right,
                 1 => Direction.Down,

@@ -76,8 +76,7 @@ public partial class Map : Node2D {
                 pos + new Vector2(-stringSize.x / 2, stringSize.y / 2),
                 tile.Room.Name,
                 modulate: Colors.White,
-                fontSize: fontSize,
-                hAlign: HorizontalAlignment.Center);
+                fontSize: fontSize);
         }
     }
     

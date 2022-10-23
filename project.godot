@@ -14,7 +14,6 @@ config/name="Delve"
 run/main_scene="res://Scenes/Main.tscn"
 config/features=PackedStringArray("4.0", "C#", "Forward Plus")
 boot_splash/show_image=false
-config/icon="res://icon.svg"
 
 [dotnet]
 

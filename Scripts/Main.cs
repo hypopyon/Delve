@@ -4,36 +4,48 @@ using System.Data;
 
 namespace Delve;
 
-public partial class Main : Node {
+public enum TurnState {
+	None,
+	Harvest,
+	Explore,
+	Trade,
+	Build,
+	Recruit,
+	Activate
+}
+
+public partial class Main : Node2D {
 
 	Map map = null!;
-	CanvasLayer uiLayer = null!;
-	Player player = null!;
+	Control interfaceNode = null!;
+	CameraController cameraController = null!;
 
-	uint resources, tradeGoods;
+	TurnState turn;
+	RoomEffectMap roomEffectMap;
+	uint resources, tradeGoods, maxResources, maxTradeGoods;
+
+	public Main() {
+		turn = TurnState.None;
+		roomEffectMap = new RoomEffectMap();
+		resources = 20;
+		tradeGoods = 20;
+		maxResources = 50;
+		maxTradeGoods = 50;
+	}
 	
 	public override void _Ready() {
-		if (GetNode("Map") is Map getMap)
-			map = getMap;
-		else throw new Exception();
 		
-		if (GetNode("UILayer") is CanvasLayer getUiLayer)
-			uiLayer = getUiLayer;
-		else throw new Exception();
-		
-		if (GetNode("Player") is Player getPlayer)
-			getPlayer = player;
-		else throw new Exception();
 	}
 
 	public override void _Process(double delta) {
-		{ if (uiLayer.GetNode("MainMargins/Inventory/Resources/Label") is Label label) {
+		{ if (GetNode("InterfaceLayer/Interface/MainMargins/Inventory/Resources/Label") is Label label) {
 			label.Text = resources.ToString();
 			label.QueueRedraw();
 		} }
-		{ if (uiLayer.GetNode("MainMargins/Inventory/TradeGoods/Label") is Label label) {
+		{ if (GetNode("InterfaceLayer/Interface/MainMargins/Inventory/TradeGoods/Label") is Label label) {
 			label.Text = tradeGoods.ToString();
 			label.QueueRedraw();
 		} }
+		QueueRedraw();
 	}
 }

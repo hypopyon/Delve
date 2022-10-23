@@ -4,7 +4,7 @@ using Delve;
 
 namespace Delve;
 
-public partial class Player : Node2D {
+public partial class CameraController : Node2D {
     Camera2D camera = null!;
     
     public override void _Ready() {
@@ -20,15 +20,17 @@ public partial class Player : Node2D {
         var moveRight = Input.IsActionPressed(Actions.MoveRight);
         var moveLeft = Input.IsActionPressed(Actions.MoveLeft);
         
+        
         var moveVector = Vector2.Zero;
         if (moveRight && !moveLeft)
-            moveVector.x = Math.Max(1, 1 / camera.Zoom.x);
+            moveVector.x = 1;
         else if (moveLeft && !moveRight)
-            moveVector.x = Math.Min(-1, -1 / camera.Zoom.x);
+            moveVector.x = -1;
         if (moveDown && !moveUp)
-            moveVector.y = Math.Max(1, 1 / camera.Zoom.y);
+            moveVector.y = 1;
         else if (moveUp && !moveDown)
-            moveVector.y = Math.Min(-1, -1 / camera.Zoom.y);
+            moveVector.y = -1;
+        moveVector = moveVector.Normalized() / camera.Zoom * 2;
         if (moveVector != Vector2.Zero)
             Position += moveVector;
 
