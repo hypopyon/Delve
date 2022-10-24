@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://b67g63nryei7c" path="res://scenes/Map.tscn" id="1_p1qvl"]
 [ext_resource type="Script" path="res://src/Main.cs" id="1_wm52d"]
 [ext_resource type="PackedScene" uid="uid://ch5rbnngobh60" path="res://scenes/CameraController.tscn" id="3_qijl4"]
-[ext_resource type="PackedScene" uid="uid://dcxwc7orjqlu1" path="res://scenes/Interface.tscn" id="4_8lykv"]
+[ext_resource type="PackedScene" uid="uid://bb1cc2wlxg8rp" path="res://scenes/Interface.tscn" id="4_8lykv"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_wm52d")
