@@ -5,6 +5,10 @@ using Delve;
 namespace Delve;
 
 public partial class CameraController : Node2D {
+    const float MoveSpeed = 2f;
+    const float MinZoom = 0.25f;
+    const float MaxZoom = 3f;
+    const float ZoomSpeed = 0.01f;
     Camera2D camera = null!;
     
     public override void _Ready() {
@@ -30,7 +34,7 @@ public partial class CameraController : Node2D {
             moveVector.y = 1;
         else if (moveUp && !moveDown)
             moveVector.y = -1;
-        moveVector = moveVector.Normalized() / camera.Zoom * 2;
+        moveVector = moveVector.Normalized() / camera.Zoom * MoveSpeed;
         if (moveVector != Vector2.Zero)
             Position += moveVector;
 
@@ -39,13 +43,13 @@ public partial class CameraController : Node2D {
 
         if (zoomIn && !zoomOut)
             camera.Zoom = new Vector2(
-                Mathf.Min(3f, camera.Zoom.x + 0.005f),
-                Mathf.Min(3f, camera.Zoom.y + 0.005f)
+                Mathf.Min(MaxZoom, camera.Zoom.x + ZoomSpeed),
+                Mathf.Min(MaxZoom, camera.Zoom.y + ZoomSpeed)
             );
         if (zoomOut && !zoomIn)
             camera.Zoom = new Vector2(
-                Mathf.Max(0.25f, camera.Zoom.x - 0.005f),
-                Mathf.Max(0.25f, camera.Zoom.y - 0.005f)
+                Mathf.Max(MinZoom, camera.Zoom.x - ZoomSpeed),
+                Mathf.Max(MinZoom, camera.Zoom.y - ZoomSpeed)
             );
     }
 }

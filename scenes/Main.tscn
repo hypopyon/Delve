@@ -1,12 +1,19 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3 uid="uid://we28kd8d3ugx"]
 
 [ext_resource type="PackedScene" uid="uid://b67g63nryei7c" path="res://scenes/Map.tscn" id="1_p1qvl"]
 [ext_resource type="Script" path="res://src/Main.cs" id="1_wm52d"]
+[ext_resource type="Script" path="res://src/Background.cs" id="2_be7tq"]
 [ext_resource type="PackedScene" uid="uid://ch5rbnngobh60" path="res://scenes/CameraController.tscn" id="3_qijl4"]
 [ext_resource type="PackedScene" uid="uid://bb1cc2wlxg8rp" path="res://scenes/Interface.tscn" id="4_8lykv"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_wm52d")
+
+[node name="BackgroundLayer" type="ParallaxBackground" parent="."]
+follow_viewport_enabled = true
+
+[node name="Background" type="Node2D" parent="BackgroundLayer"]
+script = ExtResource("2_be7tq")
 
 [node name="MapLayer" type="CanvasLayer" parent="."]
 follow_viewport_enabled = true

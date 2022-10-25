@@ -8,11 +8,11 @@ public partial class Map : Node2D {
     public override void _Draw() {
         DrawSelection();
 
-        for (var i = LeftBound; i <= RightBound; i++)
-        for (var j = TopBound; j <= BottomBound; j++)
+        for (var i = LeftTileBound; i <= RightTileBound; i++)
+        for (var j = TopTileBound; j <= BottomTileBound; j++)
             DrawConnectors(i, j);
-        for (var i = LeftBound; i <= RightBound; i++)
-        for (var j = TopBound; j <= BottomBound; j++)
+        for (var i = LeftTileBound; i <= RightTileBound; i++)
+        for (var j = TopTileBound; j <= BottomTileBound; j++)
             DrawTile(i, j);
         
     }
@@ -22,33 +22,33 @@ public partial class Map : Node2D {
         if (!getResult.IsSuccessful)
             throw new InvalidOperationException();
         var tile = getResult.Value;
-        var originOffset = new Vector2(0, Textures.Tunnel.GetSize().y / 2);
+        var textureSize = Textures.Tunnel.GetSize();
+        var originOffset = new Vector2(0, textureSize.y / 2);
         var pos = new Vector2(x * SpacedTileWidth, y * SpacedTileHeight);
         if (tile.Connectors.Right) {
             DrawSetTransform(
-                pos + (new Vector2(ConnectorOffsetX, 0) - originOffset) * TextureScale
-                , 0, TextureScale);
+                pos + (new Vector2(ConnectorOffsetX, 0) - originOffset) * Textures.WorldScaleFactor
+                , 0, Vector2.One * Textures.WorldScaleFactor);
             DrawTexture(Textures.Tunnel, Vector2.Zero);
         }
         if (tile.Connectors.Up) {
             var angle = -Mathf.Pi / 2;
             DrawSetTransform(
-                pos + (new Vector2(0, -ConnectorOffsetY) - originOffset.Rotated(angle)) * TextureScale,
-                angle, TextureScale);
+                pos + (new Vector2(0, -ConnectorOffsetY) - originOffset.Rotated(angle)) * Textures.WorldScaleFactor,
+                angle, Vector2.One * Textures.WorldScaleFactor);
             DrawTexture(Textures.Tunnel, Vector2.Zero);
         }
         if (tile.Connectors.Left) {
-            var angle = Mathf.Pi;
             DrawSetTransform(
-                pos + (new Vector2(-ConnectorOffsetX, 0) - originOffset.Rotated(angle)) * TextureScale,
-                angle, TextureScale);
+                pos + (new Vector2(-ConnectorOffsetX - textureSize.x, 0) - originOffset) * Textures.WorldScaleFactor,
+                0, Vector2.One * Textures.WorldScaleFactor);
             DrawTexture(Textures.Tunnel, Vector2.Zero);
         }
         if (tile.Connectors.Down) {
             var angle = Mathf.Pi / 2;
             DrawSetTransform(
-                pos + (new Vector2(0, ConnectorOffsetY) - originOffset.Rotated(angle)) * TextureScale,
-                angle, TextureScale);
+                pos + (new Vector2(0, ConnectorOffsetY) - originOffset.Rotated(angle)) * Textures.WorldScaleFactor,
+                angle, Vector2.One * Textures.WorldScaleFactor);
             DrawTexture(Textures.Tunnel, Vector2.Zero);
         }
         DrawSetTransform(Vector2.Zero);
@@ -61,7 +61,7 @@ public partial class Map : Node2D {
         var tile = getResult.Value;
         var texture = tile.Room is not null ? tile.Room.Texture : Textures.Tiles.Unexplored;
         var pos = new Vector2(x * SpacedTileWidth, y * SpacedTileHeight);
-        DrawSetTransform(pos - texture.GetSize() / 2 * TextureScale, 0, TextureScale);
+        DrawSetTransform(pos - texture.GetSize() / 2 * Textures.WorldScaleFactor, 0, Vector2.One * Textures.WorldScaleFactor);
         DrawTexture(texture, Vector2.Zero);
         DrawSetTransform(Vector2.Zero);
         if (tile.Room is not null) {

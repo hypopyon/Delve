@@ -1,36 +1,24 @@
 using Godot;
 using System;
 using System.Data;
+using Delve.Meta;
+using System.Collections.Generic;
+
 
 namespace Delve;
 
-public enum TurnState {
-	None,
-	Harvest,
-	Explore,
-	Trade,
-	Build,
-	Recruit,
-	Activate
-}
-
 public partial class Main : Node2D {
-
 	Map map = null!;
-	Control interfaceNode = null!;
+	UserInterface userInterface = null!;
 	CameraController cameraController = null!;
 
-	TurnState turn;
-	RoomEffectMap roomEffectMap;
-	uint resources, tradeGoods, maxResources, maxTradeGoods;
+	GameMeta meta;
+	GameState state;
+
 
 	public Main() {
-		turn = TurnState.None;
-		roomEffectMap = new RoomEffectMap();
-		resources = 20;
-		tradeGoods = 20;
-		maxResources = 50;
-		maxTradeGoods = 50;
+		
+		
 	}
 	
 	public override void _Ready() {
@@ -38,14 +26,13 @@ public partial class Main : Node2D {
 	}
 
 	public override void _Process(double delta) {
-		{ if (GetNode("InterfaceLayer/Interface/MainMargins/Inventory/Resources/Label") is Label label) {
+		/*{ if (GetNode("InterfaceLayer/Interface/MainMargins/Inventory/Resources/Label") is Label label) {
 			label.Text = resources.ToString();
 			label.QueueRedraw();
 		} }
 		{ if (GetNode("InterfaceLayer/Interface/MainMargins/Inventory/TradeGoods/Label") is Label label) {
 			label.Text = tradeGoods.ToString();
 			label.QueueRedraw();
-		} }
-		QueueRedraw();
+		} }*/
 	}
 }

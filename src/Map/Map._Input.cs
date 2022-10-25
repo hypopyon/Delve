@@ -14,8 +14,8 @@ public partial class Map : Node2D {
         if (inputEvent.IsAction("interact_main")) {
             if (!inputEvent.IsPressed()) return;
             if (hoverTileX is not null && hoverTileY is not null) {
-                if (hoverTileY > BottomBound)
-                    ExpandDownwards(hoverTileY.Value - BottomBound);
+                if (hoverTileY > BottomTileBound)
+                    ExpandDownwards(hoverTileY.Value - BottomTileBound);
                 var tile = GetTile(hoverTileX.Value, hoverTileY.Value);
                 tile.Value.Room ??= new Cavern();
             }

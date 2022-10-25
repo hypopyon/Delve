@@ -4,8 +4,14 @@ using System;
 namespace Delve; 
 
 public static class Textures {
+    public const int ConnectorWidth = 8;
+    public const int TileWidth = 80;
+    public const int TileHeight = 48;
+    public const int WorldScaleFactor = 2;
+    
     const string TexturesFolder = "res://assets/textures/";
     public static readonly Texture2D Tunnel = (Texture2D)GD.Load(TexturesFolder + "Tunnel.png");
+    public static readonly Texture2D Background = (Texture2D)GD.Load(TexturesFolder + "Background.png");
 
     public static class Tiles {
         const string TilesTexturesFolder = TexturesFolder + "Tiles/";

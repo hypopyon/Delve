@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class Interface : Control
+public partial class UserInterface : Control
 {
 	public override void _Process(double delta) {
 		QueueRedraw();

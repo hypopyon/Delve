@@ -2,6 +2,9 @@
 using System.Xml.Serialization;
 using DotNext;
 using Godot;
+using Delve.Combat;
+using System.Collections.Generic;
+using Delve.Meta.Rooms;
 
 namespace Delve; 
 
@@ -20,17 +23,20 @@ public class Tile {
 
     public Connectors Connectors;
 
-    public Room? Room;
+    public RoomInstance? Room;
+    public List<CombatEntity> CombatEntities;
+    
 
     public Tile(Map map, int x, uint y) {
         this.map = map;
-        if (X < Map.LeftBound || X > Map.RightBound)
+        if (X < Map.LeftTileBound || X > Map.RightTileBound)
             throw new ArgumentOutOfRangeException(nameof(x));
         X = x;
-        if (Y > map.BottomBound)
+        if (Y > map.BottomTileBound)
             throw new ArgumentOutOfRangeException(nameof(y));
         Y = y;
         Connectors = new Connectors();
+        CombatEntities = new List<CombatEntity>();
     }
 
     public Result Connect(Tile other) {

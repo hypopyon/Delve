@@ -6,21 +6,16 @@ using DotNext;
 
 namespace Delve;
 public partial class Map : Node2D {
-    const int Width = 13;
-    const int Center = 6;
-    const uint InitialHeight = 13;
-    const int ConnectorTextureWidth = 8;
-    const int TileTextureWidth = 80;
-    const int TileTextureHeight = 48;
-    public const int SpacedTileWidth = (TileTextureWidth + ConnectorTextureWidth * 2) * TextureScaleFactor;
-    public const int SpacedTileHeight = (TileTextureHeight + ConnectorTextureWidth * 2) * TextureScaleFactor;
-    public const uint TopBound = 0;
-    public const int LeftBound = -Center;
-    public const int RightBound = Center;
-    const int TextureScaleFactor = 2;
-    static Vector2 TextureScale => new Vector2(TextureScaleFactor, TextureScaleFactor);
-    static int ConnectorOffsetX => (TileTextureWidth) / 2;
-    static int ConnectorOffsetY => (TileTextureHeight) / 2;
+    public const int TilesWidth = 13;
+    public const int CenterTile = 6;
+    const uint InitialTilesHeight = 13;
+    const uint TopTileBound = 0;
+    public const int LeftTileBound = -CenterTile;
+    public const int RightTileBound = CenterTile;
+    public const int SpacedTileWidth = (Textures.TileWidth + Textures.ConnectorWidth * 2) * Textures.WorldScaleFactor;
+    public const int SpacedTileHeight = (Textures.TileHeight + Textures.ConnectorWidth * 2) * Textures.WorldScaleFactor;
+    static int ConnectorOffsetX => Textures.TileWidth / 2;
+    static int ConnectorOffsetY => Textures.TileHeight / 2;
 
     Tile[,] tiles;
     int? hoverTileX, hoverAdjacentTileX;
@@ -28,16 +23,16 @@ public partial class Map : Node2D {
     //Direction? selectAdjacentDir;
     
 
-    public uint BottomBound => Convert.ToUInt32(tiles.GetLength(1) - 1);
+    public uint BottomTileBound => Convert.ToUInt32(tiles.GetLength(1) - 1);
 
     public Map() {
-        tiles = new Tile[Width, InitialHeight];
-        for (var i = 0; i < Width; i++)
-        for (uint j = 0; j < InitialHeight; j++)
-            tiles[i, j] = new Tile(this, i - Center, j);
+        tiles = new Tile[TilesWidth, InitialTilesHeight];
+        for (var i = 0; i < TilesWidth; i++)
+        for (uint j = 0; j < InitialTilesHeight; j++)
+            tiles[i, j] = new Tile(this, i - CenterTile, j);
         {
             Tile? lastTile = null;
-            for (var i = LeftBound; i <= RightBound; i++) {
+            for (var i = LeftTileBound; i <= RightTileBound; i++) {
                 var tile = GetTile(i, 0).Value;
                 tile.Room = new Cavern();
                 tile.Connectors.Up = true;
@@ -58,8 +53,8 @@ public partial class Map : Node2D {
             return new Result(new ArgumentOutOfRangeException());
         var oldHeight = tiles.GetLength(1);
         var newHeight = oldHeight + amount;
-        var newTiles = new Tile[Width, newHeight];
-        for (var i = 0; i < Width; i++) {
+        var newTiles = new Tile[TilesWidth, newHeight];
+        for (var i = 0; i < TilesWidth; i++) {
             for (var j = 0; j < oldHeight; j++)
                 newTiles[i, j] = tiles[i, j];
             for (var j = oldHeight; j < newHeight; j++)
@@ -70,8 +65,8 @@ public partial class Map : Node2D {
     }
 
     public Result<Tile> GetTile(int x, uint y) {
-        var adjustedX = x + Center;
-        if (adjustedX is < 0 or >= Width || y > BottomBound)
+        var adjustedX = x + CenterTile;
+        if (adjustedX is < 0 or >= TilesWidth || y > BottomTileBound)
             return new Result<Tile>(new IndexOutOfRangeException());
         return tiles[adjustedX, y];
     }

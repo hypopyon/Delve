@@ -17,12 +17,12 @@ public partial class Map : Node2D {
         var relativeWorldMousePos = worldMousePos - GlobalPosition;
         
         var nearestTileX = Mathf.Round(relativeWorldMousePos.x / SpacedTileWidth);
-        if (nearestTileX >= LeftBound && nearestTileX <= RightBound)
+        if (nearestTileX >= LeftTileBound && nearestTileX <= RightTileBound)
             hoverTileX = Convert.ToInt32(nearestTileX);
         else hoverTileX = null;
         var nearestTileY = MathF.Round(relativeWorldMousePos.y / SpacedTileHeight);
         
-        if (nearestTileY >= TopBound && nearestTileY <= BottomBound + 1)
+        if (nearestTileY >= TopTileBound && nearestTileY <= BottomTileBound + 1)
             hoverTileY = Convert.ToUInt32(nearestTileY);
         else hoverTileY = null;
 
@@ -39,26 +39,26 @@ public partial class Map : Node2D {
             
             switch (dir) {
                 case Direction.Right:
-                    if (hoverTileX.Value < RightBound)
+                    if (hoverTileX.Value < RightTileBound)
                         hoverAdjacentTileX = hoverTileX.Value + 1;
                     else hoverAdjacentTileX = null;
                     hoverAdjacentTileY = hoverTileY.Value;
                     break;
                 case Direction.Up:
                     hoverAdjacentTileX = hoverTileX.Value;
-                    if (hoverTileY.Value > TopBound)
+                    if (hoverTileY.Value > TopTileBound)
                         hoverAdjacentTileY = hoverTileY.Value - 1;
                     else hoverAdjacentTileY = null;
                     break;
                 case Direction.Left:
-                    if (hoverTileX.Value > LeftBound)
+                    if (hoverTileX.Value > LeftTileBound)
                         hoverAdjacentTileX = hoverTileX.Value - 1;
                     else hoverAdjacentTileX = null;
                     hoverAdjacentTileY = hoverTileY.Value;
                     break;
                 case Direction.Down:
                     hoverAdjacentTileX = hoverTileX.Value;
-                    if (hoverTileY.Value < BottomBound)
+                    if (hoverTileY.Value < BottomTileBound)
                         hoverAdjacentTileY = hoverTileY.Value + 1;
                     else hoverAdjacentTileY = null;
                     break;

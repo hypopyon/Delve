@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Delve;
 
 public class RoomEffectMap {
-    Dictionary<string, RoomEffect> effects = new();
+    Dictionary<string, RoomEffectBehavior> effects = new();
 
 
     //public bool IsEffectActive(string name) {
@@ -19,7 +19,7 @@ public class RoomEffectMap {
 }
 
 
-public abstract class RoomEffect {
+public abstract class RoomEffectBehavior {
     public abstract string Name { get; }
     public List<Tile> sources;
 
@@ -27,7 +27,7 @@ public abstract class RoomEffect {
     public abstract void Deactivate(RoomEffectMap effectMap);
 }
 
-public class UndergroundForestHarvestEffect : RoomEffect {
+public class UndergroundForestHarvestEffectBehavior : RoomEffectBehavior {
     public override string Name => "Forest";
 
     public int Harvest => sources.Count;
