@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Reflection.Metadata;
-using Delve.Rooms;
+using Delve.Structures;
 using Godot;
 
 namespace Delve;
@@ -59,22 +59,22 @@ public partial class Map : Node2D {
         if (!getResult.IsSuccessful)
             throw new InvalidOperationException();
         var tile = getResult.Value;
-        var texture = tile.Room is not null ? tile.Room.Texture : Textures.Tiles.Unexplored;
+        var texture = tile.Structure is not null ? tile.Structure.Description.Texture : Textures.Tiles.Unexplored;
         var pos = new Vector2(x * SpacedTileWidth, y * SpacedTileHeight);
         DrawSetTransform(pos - texture.GetSize() / 2 * Textures.WorldScaleFactor, 0, Vector2.One * Textures.WorldScaleFactor);
         DrawTexture(texture, Vector2.Zero);
         DrawSetTransform(Vector2.Zero);
-        if (tile.Room is not null) {
+        if (tile.Structure is not null) {
             var font = Fonts.Mono;
             var actualHeightRatio = Fonts.MonoActualHeightRatio;
             var fontSize = 16;
-            var stringSize = font.GetStringSize(tile.Room.Name, fontSize: fontSize);
+            var stringSize = font.GetStringSize(tile.Structure.Description.Name, fontSize: fontSize);
             stringSize.y = Mathf.Floor(fontSize * actualHeightRatio);
             
             this.DrawStringZoomCorrected(
                 font,
                 pos + new Vector2(-stringSize.x / 2, stringSize.y / 2),
-                tile.Room.Name,
+                tile.Structure.Description.Name,
                 modulate: Colors.White,
                 fontSize: fontSize);
         }

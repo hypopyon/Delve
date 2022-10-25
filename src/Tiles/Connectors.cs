@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-namespace Delve;
+namespace Delve.Tiles;
 
 public class Connectors {
     public bool Up, Right, Down, Left;

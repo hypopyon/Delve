@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Xml.Serialization;
 using DotNext;
-using Godot;
 using Delve.Combat;
+using Delve.Structures;
 using System.Collections.Generic;
-using Delve.Meta.Rooms;
 
-namespace Delve; 
+namespace Delve.Tiles; 
 
 public class Tile {
     readonly Map map;
@@ -19,11 +17,11 @@ public class Tile {
         }
     }
 
-    public bool Empty => Room == null;
+    public bool Empty => Structure is null;
 
     public Connectors Connectors;
 
-    public RoomInstance? Room;
+    public StructureInstance? Structure;
     public List<CombatEntity> CombatEntities;
     
 
@@ -78,7 +76,7 @@ public class Tile {
             return new (new ArgumentException(null, nameof(other)));
         if (!Valid || !other.Valid)
             return new Result<Direction>(new InvalidOperationException());
-        if (Room is null || other.Room is null)
+        if (Structure is null || other.Structure is null)
             return new Result<Direction>(new InvalidOperationException());
         var sameX = X == other.X;
         var sameY = Y == other.Y;

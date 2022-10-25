@@ -7,7 +7,7 @@ public class GameState {
     public uint Resources, TradeGoods, MaxResources, MaxTradeGoods;
     public Map Map;
 
-    public GameState() {
-        
+    public GameState(Map map) {
+        Map = map;
     }
 }

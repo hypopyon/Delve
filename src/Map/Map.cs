@@ -1,7 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using Delve.Rooms;
+using Delve.Tiles;
 using DotNext;
 
 namespace Delve;
@@ -30,19 +30,6 @@ public partial class Map : Node2D {
         for (var i = 0; i < TilesWidth; i++)
         for (uint j = 0; j < InitialTilesHeight; j++)
             tiles[i, j] = new Tile(this, i - CenterTile, j);
-        {
-            Tile? lastTile = null;
-            for (var i = LeftTileBound; i <= RightTileBound; i++) {
-                var tile = GetTile(i, 0).Value;
-                tile.Room = new Cavern();
-                tile.Connectors.Up = true;
-                tile.Connectors.Down = true;
-                if (lastTile is not null) tile.Connect(lastTile);
-                lastTile = tile;
-            }
-        }
-        var entrance = GetTile(0, 0).Value;
-        entrance.Room = new Entrance();
     }
     
     public override void _Ready() {

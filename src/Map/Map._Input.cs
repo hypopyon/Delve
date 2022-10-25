@@ -1,6 +1,6 @@
 ﻿using System;
-using Delve.Rooms;
 using Godot;
+using Delve.Structures;
 
 
 
@@ -11,18 +11,6 @@ public partial class Map : Node2D {
     }
     
     public override void _UnhandledInput(InputEvent inputEvent) {
-        if (inputEvent.IsAction("interact_main")) {
-            if (!inputEvent.IsPressed()) return;
-            if (hoverTileX is not null && hoverTileY is not null) {
-                if (hoverTileY > BottomTileBound)
-                    ExpandDownwards(hoverTileY.Value - BottomTileBound);
-                var tile = GetTile(hoverTileX.Value, hoverTileY.Value);
-                tile.Value.Room ??= new Cavern();
-            }
-
-            var viewport = GetViewport();
-            viewport.SetInputAsHandled();
-            
-        }
+        
     }
 }
