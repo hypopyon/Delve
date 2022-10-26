@@ -1,9 +1,9 @@
 ﻿using System;
 using Godot;
 
-namespace Delve;
+namespace Delve; 
 
-public partial class Map : Node2D {
+public partial class Main {
     void UpdateSelectedTiles() {
         var viewport = GetViewport();
         var camera = viewport.GetCamera2d();
@@ -15,18 +15,19 @@ public partial class Map : Node2D {
         } / camera.Zoom + camera.GlobalPosition;
         var relativeWorldMousePos = worldMousePos - GlobalPosition;
         
-        var nearestTileX = Mathf.Round(relativeWorldMousePos.x / SpacedTileWidth);
-        if (nearestTileX >= LeftTileBound && nearestTileX <= RightTileBound)
+        int? hoverTileX = null, hoverAdjacentTileX = null;
+        uint? hoverTileY = null, hoverAdjacentTileY = null;
+        var nearestTileX = Mathf.Round(relativeWorldMousePos.x / Textures.SpacedTileWidth);
+        if (nearestTileX >= GameMap.LeftTileBound && nearestTileX <= GameMap.RightTileBound)
             hoverTileX = Convert.ToInt32(nearestTileX);
         else hoverTileX = null;
-        var nearestTileY = MathF.Round(relativeWorldMousePos.y / SpacedTileHeight);
-        
-        if (nearestTileY >= TopTileBound && nearestTileY <= BottomTileBound + 1)
+        var nearestTileY = MathF.Round(relativeWorldMousePos.y / Textures.SpacedTileHeight);
+        if (nearestTileY >= GameMap.TopTileBound && nearestTileY <= Map.BottomTileBound)
             hoverTileY = Convert.ToUInt32(nearestTileY);
         else hoverTileY = null;
 
         if (hoverTileX is not null && hoverTileY is not null) {
-            var selectWorldPosition = new Vector2(nearestTileX * SpacedTileWidth, nearestTileY * SpacedTileHeight);
+            var selectWorldPosition = new Vector2(nearestTileX * Textures.SpacedTileWidth, nearestTileY * Textures.SpacedTileHeight);
             var angle = selectWorldPosition.AngleToPoint(relativeWorldMousePos);
             var dir = (Mathf.RoundToInt(angle / (Mathf.Pi / 2) + 2) % 4) switch {
                 0 => Direction.Right,
@@ -38,32 +39,35 @@ public partial class Map : Node2D {
             
             switch (dir) {
                 case Direction.Right:
-                    if (hoverTileX.Value < RightTileBound)
-                        hoverAdjacentTileX = hoverTileX.Value + 1;
-                    else hoverAdjacentTileX = null;
+                    hoverAdjacentTileX = hoverTileX.Value + 1;
                     hoverAdjacentTileY = hoverTileY.Value;
                     break;
                 case Direction.Up:
                     hoverAdjacentTileX = hoverTileX.Value;
-                    if (hoverTileY.Value > TopTileBound)
-                        hoverAdjacentTileY = hoverTileY.Value - 1;
-                    else hoverAdjacentTileY = null;
+                    hoverAdjacentTileY = hoverTileY.Value - 1;
                     break;
                 case Direction.Left:
-                    if (hoverTileX.Value > LeftTileBound)
-                        hoverAdjacentTileX = hoverTileX.Value - 1;
-                    else hoverAdjacentTileX = null;
+                    hoverAdjacentTileX = hoverTileX.Value - 1;
                     hoverAdjacentTileY = hoverTileY.Value;
                     break;
                 case Direction.Down:
                     hoverAdjacentTileX = hoverTileX.Value;
-                    if (hoverTileY.Value < BottomTileBound)
-                        hoverAdjacentTileY = hoverTileY.Value + 1;
-                    else hoverAdjacentTileY = null;
+                    hoverAdjacentTileY = hoverTileY.Value + 1;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
+
+        if (hoverTileX is not null && hoverTileY is not null) {
+            var getHoverTile = Map.GetTile(hoverTileX.Value, hoverTileY.Value);
+            hoverTile = getHoverTile.IsSuccessful ? getHoverTile.Value : null;
+        } else hoverTile = null;
+
+        if (hoverAdjacentTileX is not null && hoverAdjacentTileY is not null) {
+            var getHoverAdjacentTile = Map.GetTile(hoverAdjacentTileX.Value, hoverAdjacentTileY.Value);
+            hoverAdjacentTile = getHoverAdjacentTile.IsSuccessful ? getHoverAdjacentTile.Value : null;
+        } else hoverAdjacentTile = null;
+
     }
 }

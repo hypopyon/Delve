@@ -1,4 +1,5 @@
-﻿using Delve.Structures;
+﻿using System.Collections.Generic;
+using Delve.Structures;
 
 namespace Delve.Meta; 
 
@@ -19,8 +20,11 @@ public partial class GameMeta {
                 Build = new BuildBehavior {
                     ResourcesCost = 15
                 },
-                Housing = new HousingBehavior() {
-                    
+                Housing = new HousingBehavior {
+                    HousableUnits = new Dictionary<string, int> {
+                        ["Soldier"] = 5,
+                        ["Gunner"] = 5,
+                    }
                 }
             },
         };

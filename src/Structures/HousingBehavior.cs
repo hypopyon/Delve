@@ -3,5 +3,5 @@
 namespace Delve.Structures; 
 
 public class HousingBehavior {
-    Dictionary<string, int> HousableUnits;
+    public Dictionary<string, int> HousableUnits;
 }

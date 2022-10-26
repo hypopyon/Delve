@@ -1,5 +1,5 @@
 ﻿namespace Delve.Combat; 
 
-public class CombatEntity {
+public class CombatActor {
     
 }

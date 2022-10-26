@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=3 uid="uid://cb5svdiqc3fy6"]
 
-[ext_resource type="PackedScene" uid="uid://b67g63nryei7c" path="res://scenes/Map.tscn" id="1_p1qvl"]
 [ext_resource type="Script" path="res://src/Main.cs" id="1_wm52d"]
-[ext_resource type="Script" path="res://src/Background.cs" id="2_be7tq"]
-[ext_resource type="PackedScene" uid="uid://ch5rbnngobh60" path="res://scenes/CameraController.tscn" id="3_qijl4"]
+[ext_resource type="Script" path="res://src/BackgroundDrawer.cs" id="2_tpiuj"]
+[ext_resource type="Script" path="res://src/MapDrawer.cs" id="4_prwr0"]
+[ext_resource type="Script" path="res://src/CameraController.cs" id="4_yfvuo"]
 [ext_resource type="PackedScene" uid="uid://bb1cc2wlxg8rp" path="res://scenes/UserInterface.tscn" id="5_1ixbc"]
 
 [node name="Main" type="Node2D"]
@@ -12,19 +12,24 @@ script = ExtResource("1_wm52d")
 [node name="BackgroundLayer" type="ParallaxBackground" parent="."]
 follow_viewport_enabled = true
 
-[node name="Background" type="Node2D" parent="BackgroundLayer"]
-script = ExtResource("2_be7tq")
+[node name="BackgroundDrawer" type="Node2D" parent="BackgroundLayer"]
+script = ExtResource("2_tpiuj")
 
 [node name="MapLayer" type="CanvasLayer" parent="."]
 follow_viewport_enabled = true
 
-[node name="Map" parent="MapLayer" instance=ExtResource("1_p1qvl")]
+[node name="MapDrawer" type="Node2D" parent="MapLayer"]
+script = ExtResource("4_prwr0")
 
 [node name="CameraControllerLayer" type="CanvasLayer" parent="."]
 layer = 2
 follow_viewport_enabled = true
 
-[node name="CameraController" parent="CameraControllerLayer" instance=ExtResource("3_qijl4")]
+[node name="CameraController" type="Node2D" parent="CameraControllerLayer"]
+script = ExtResource("4_yfvuo")
+
+[node name="Camera2D" type="Camera2D" parent="CameraControllerLayer/CameraController"]
+current = true
 
 [node name="UserInterfaceLayer" type="CanvasLayer" parent="."]
 layer = 3

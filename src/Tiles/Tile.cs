@@ -3,38 +3,40 @@ using DotNext;
 using Delve.Combat;
 using Delve.Structures;
 using System.Collections.Generic;
+using Godot;
 
 namespace Delve.Tiles; 
 
 public class Tile {
-    readonly Map map;
+    readonly GameMap gameMap;
     public readonly int X;
     public readonly uint Y;
     bool Valid {
         get {
-            var tile = map.GetTile(X, Y);
+            var tile = gameMap.GetTile(X, Y);
             return tile ? tile.Value == this : false;
         }
     }
 
     public bool Empty => Structure is null;
+    public Texture2D Texture => Empty ? Textures.Tiles.Unexplored : Structure.Description.Texture;
 
     public Connectors Connectors;
 
     public StructureInstance? Structure;
-    public List<CombatEntity> CombatEntities;
+    //public List<CombatEntity> CombatEntities;
     
 
-    public Tile(Map map, int x, uint y) {
-        this.map = map;
-        if (X < Map.LeftTileBound || X > Map.RightTileBound)
+    public Tile(GameMap gameMap, int x, uint y) {
+        this.gameMap = gameMap;
+        if (X < GameMap.LeftTileBound || X > GameMap.RightTileBound)
             throw new ArgumentOutOfRangeException(nameof(x));
         X = x;
-        if (Y > map.BottomTileBound)
+        if (Y > gameMap.BottomTileBound)
             throw new ArgumentOutOfRangeException(nameof(y));
         Y = y;
         Connectors = new Connectors();
-        CombatEntities = new List<CombatEntity>();
+        //CombatEntities = new List<CombatEntity>();
     }
 
     public Result Connect(Tile other) {
@@ -107,6 +109,6 @@ public class Tile {
             Direction.Up => (X, Y - 1),
             _ => throw new ArgumentOutOfRangeException(nameof(dir), dir, null)
         };
-        return map.GetTile(adjacentX, adjacentY);
+        return gameMap.GetTile(adjacentX, adjacentY);
     }
 }

@@ -3,22 +3,27 @@ using System;
 using System.Data;
 using Delve.Meta;
 using System.Collections.Generic;
+using Delve.Tiles;
 
 
 namespace Delve;
 
 public partial class Main : Node2D {
-	Map map = null!;
+	MapDrawer mapDrawer = null!;
 	UserInterface userInterface = null!;
 	CameraController cameraController = null!;
 
-	GameMeta meta;
-	GameState state;
+	public GameMeta Meta;
+	public GameState State;
+	public GameMap Map;
+	
+	Tile? hoverTile, hoverAdjacentTile;
 
 
 	public Main() {
-		
-		
+		Meta = new GameMeta();
+		State = new GameState();
+		Map = new GameMap();
 	}
 	
 	public override void _Ready() {
@@ -34,6 +39,7 @@ public partial class Main : Node2D {
 			label.Text = tradeGoods.ToString();
 			label.QueueRedraw();
 		} }*/
+		UpdateSelectedTiles();
 	}
 
 	public override void _UnhandledInput(InputEvent inputEvent) {
