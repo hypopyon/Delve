@@ -1,7 +1,7 @@
 ﻿namespace Delve.Structures;
 
 public class BuildBehavior {
-    public uint ResourcesCost, TradeGoodsCost;
+    public int ResourcesCost, TradeGoodsCost;
     
     public bool MeetsRequirements(GameState state) {
         return state.Resources >= ResourcesCost && state.TradeGoods >= TradeGoodsCost;

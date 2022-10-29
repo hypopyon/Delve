@@ -10,7 +10,6 @@ public enum CardColor {
 }
 
 public enum CardSuit {
-    None,
     Spades,
     Hearts,
     Clubs,
@@ -38,18 +37,48 @@ public static class CardExtensions {
             _ => throw new Exception()
         };
     }
-    public static CardSuit GetSuit(this Card card) {
+    public static Optional<CardSuit> GetSuit(this Card card) {
         return card switch {
             >= Card.SpadesAce and <= Card.SpadesKing => CardSuit.Spades,
             >= Card.HeartsAce and <= Card.HeartsKing => CardSuit.Hearts,
             >= Card.ClubsAce and <= Card.ClubsKing => CardSuit.Clubs,
             >= Card.DiamondsAce and <= Card.DiamondsKing => CardSuit.Diamonds,
-            Card.LittleJoker or Card.BigJoker => CardSuit.None,
+            Card.LittleJoker or Card.BigJoker => Optional<CardSuit>.None,
             _ => throw new Exception()
         };
     }
     public static Optional<int> GetValue(this Card card) {
         return card >= Card.LittleJoker ? Optional.None<int>() : Optional.Some((int)card % 13 + 1);
+    }
+
+    public static string GetName(this Card card) {
+        switch (card)
+        {
+            case Card.LittleJoker:
+                return "Little Joker";
+            case Card.BigJoker:
+                return "Big Joker";
+            case >= Card.SpadesAce and <= Card.DiamondsKing:
+                var suitString = card.GetSuit().Value switch {
+                    CardSuit.Spades => "Spades",
+                    CardSuit.Hearts => "Hearts",
+                    CardSuit.Clubs => "Clubs",
+                    CardSuit.Diamonds => "Diamonds",
+                    _ => throw new Exception(),
+                };
+                var value = card.GetValue().Value;
+                var valueString = value switch {
+                    1 => "Ace",
+                    <= 10 => value.ToString(),
+                    11 => "Jack",
+                    12 => "Queen",
+                    13 => "King",
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+                return valueString + " of " + suitString;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
     }
 }
 
@@ -58,11 +87,11 @@ public struct CardPullOptions {
 }
 
 public static class Cards {
-    public static Card Pull(RandomNumberGenerator rng, CardPullOptions options) {
+    public static Card PullSingle(RandomNumberGenerator rng, CardPullOptions options) {
         var min = options.Spades ? Card.SpadesAce : Card.HeartsAce;
         (bool swapJoker, Card max) = options.LittleJoker switch {
             true when options.BigJoker => (false, Card.BigJoker),
-            true when !options.BigJoker => (false, Card.LittleJoker),
+            true when options.BigJoker == false => (false, Card.LittleJoker),
             false when options.BigJoker => (true, Card.LittleJoker),
             _ => (false, Card.DiamondsKing)
         };
@@ -70,5 +99,9 @@ public static class Cards {
         if (result == Card.LittleJoker && swapJoker)
             result = Card.BigJoker;
         return result;
+    }
+
+    public static Card[] PullMultiple(RandomNumberGenerator rng, CardPullOptions options) {
+        throw new NotImplementedException();
     }
 }

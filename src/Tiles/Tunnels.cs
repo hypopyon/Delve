@@ -1,11 +1,10 @@
-﻿using Godot;
-
+﻿
 namespace Delve.Tiles;
 
-public class Connectors {
+public class Tunnels {
     public bool Up, Right, Down, Left;
 
-    public Connectors() {
+    public Tunnels() {
         Up = false;
         Right = false;
         Down = false;

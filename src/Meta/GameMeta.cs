@@ -2,14 +2,14 @@
 using Delve.Structures;
 using Delve.Units;
 
-namespace Delve.Meta;
+namespace Delve;
 
 public partial class GameMeta {
-    public Dictionary<string, StructureDescription> Structures;
-    public Dictionary<string, UnitDescription> Units;
+    public StructuresMeta Structures;
+    public UnitsMeta Units;
 
     public GameMeta() {
-        DefineStructures();
-        DefineUnits();
+        Structures = new StructuresMeta();
+        Units = new UnitsMeta();
     }
 }

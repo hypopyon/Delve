@@ -26,13 +26,13 @@ public partial class CameraController : Node2D {
         
         
         var moveVector = Vector2.Zero;
-        if (moveRight && !moveLeft)
+        if (moveRight && moveLeft == false)
             moveVector.x = 1;
-        else if (moveLeft && !moveRight)
+        else if (moveLeft && moveRight == false)
             moveVector.x = -1;
-        if (moveDown && !moveUp)
+        if (moveDown && moveUp == false)
             moveVector.y = 1;
-        else if (moveUp && !moveDown)
+        else if (moveUp && moveDown == false)
             moveVector.y = -1;
         moveVector = moveVector.Normalized() / camera.Zoom * MoveSpeed;
         if (moveVector != Vector2.Zero)

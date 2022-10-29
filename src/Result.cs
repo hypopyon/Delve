@@ -8,10 +8,6 @@ public readonly struct Result {
     readonly bool success;
     readonly ExceptionDispatchInfo? exception;
 
-    public Result() {
-        success = false;
-        exception = null;
-    }
     public Result(Exception error) {
         success = false;
         exception = ExceptionDispatchInfo.Capture(error);
@@ -21,8 +17,7 @@ public readonly struct Result {
         exception = null;
     }
 
-    public static Result Failure => new();
-    public static Result Success = new(true);
+    public static Result Success { get; } = new(true);
     public static Result FromError(Exception error) => new(error);
 
     [MemberNotNullWhen(false, nameof(Error))]

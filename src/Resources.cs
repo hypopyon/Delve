@@ -21,8 +21,10 @@ public static class Textures {
         const string TilesTexturesFolder = TexturesFolder + "Tiles/";
         
         public static readonly Texture2D Unexplored = (Texture2D)GD.Load(TilesTexturesFolder + "Unexplored.png");
-        public static readonly Texture2D Cavern = (Texture2D)GD.Load(TilesTexturesFolder + "Cavern.png");
         public static readonly Texture2D Entrance = (Texture2D)GD.Load(TilesTexturesFolder + "Entrance.png");
+        public static readonly Texture2D Cavern = (Texture2D)GD.Load(TilesTexturesFolder + "Cavern.png");
+        public static readonly Texture2D Forest = (Texture2D)GD.Load(TilesTexturesFolder + "Forest.png");
+        public static readonly Texture2D CrystalCavern = (Texture2D)GD.Load(TilesTexturesFolder + "CrystalCavern.png");
     }
 }
 

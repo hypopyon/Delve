@@ -1,24 +1,29 @@
-[gd_scene load_steps=6 format=3 uid="uid://cb5svdiqc3fy6"]
+[gd_scene load_steps=8 format=3 uid="uid://cb5svdiqc3fy6"]
 
 [ext_resource type="Script" path="res://src/Main.cs" id="1_wm52d"]
 [ext_resource type="Script" path="res://src/BackgroundDrawer.cs" id="2_tpiuj"]
 [ext_resource type="Script" path="res://src/MapDrawer.cs" id="4_prwr0"]
 [ext_resource type="Script" path="res://src/CameraController.cs" id="4_yfvuo"]
-[ext_resource type="PackedScene" uid="uid://bb1cc2wlxg8rp" path="res://scenes/UserInterface.tscn" id="5_1ixbc"]
+[ext_resource type="Script" path="res://src/UserInterface.cs" id="5_k4wex"]
+[ext_resource type="Texture2D" uid="uid://28qyymr3hvxm" path="res://assets/textures/Interface/Heart.png" id="6_aosh2"]
+[ext_resource type="Texture2D" uid="uid://dlt40pqaty7oa" path="res://assets/textures/Interface/Diamond.png" id="7_1i3hs"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_wm52d")
 
-[node name="BackgroundLayer" type="ParallaxBackground" parent="."]
+[node name="BackgroundLayer" type="CanvasLayer" parent="."]
+layer = -100
 follow_viewport_enabled = true
 
 [node name="BackgroundDrawer" type="Node2D" parent="BackgroundLayer"]
+texture_filter = 1
 script = ExtResource("2_tpiuj")
 
 [node name="MapLayer" type="CanvasLayer" parent="."]
 follow_viewport_enabled = true
 
 [node name="MapDrawer" type="Node2D" parent="MapLayer"]
+texture_filter = 1
 script = ExtResource("4_prwr0")
 
 [node name="CameraControllerLayer" type="CanvasLayer" parent="."]
@@ -34,4 +39,81 @@ current = true
 [node name="UserInterfaceLayer" type="CanvasLayer" parent="."]
 layer = 3
 
-[node name="UserInterface" parent="UserInterfaceLayer" instance=ExtResource("5_1ixbc")]
+[node name="UserInterface" type="Control" parent="UserInterfaceLayer"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 1
+script = ExtResource("5_k4wex")
+
+[node name="MainMargins" type="MarginContainer" parent="UserInterfaceLayer/UserInterface"]
+layout_mode = 0
+offset_right = 348.0
+offset_bottom = 144.0
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="Inventory" type="HBoxContainer" parent="UserInterfaceLayer/UserInterface/MainMargins"]
+layout_mode = 2
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 308.0
+offset_bottom = 104.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="Resources" type="HBoxContainer" parent="UserInterfaceLayer/UserInterface/MainMargins/Inventory"]
+layout_mode = 2
+offset_right = 132.0
+offset_bottom = 64.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="TextureRect" type="TextureRect" parent="UserInterfaceLayer/UserInterface/MainMargins/Inventory/Resources"]
+layout_mode = 2
+offset_right = 64.0
+offset_bottom = 64.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource("6_aosh2")
+
+[node name="Label" type="Label" parent="UserInterfaceLayer/UserInterface/MainMargins/Inventory/Resources"]
+custom_minimum_size = Vector2i(64, 0)
+layout_mode = 2
+offset_left = 68.0
+offset_top = 19.0
+offset_right = 132.0
+offset_bottom = 45.0
+text = "XXXXXX"
+horizontal_alignment = 1
+vertical_alignment = 1
+text_overrun_behavior = 1
+
+[node name="TradeGoods" type="HBoxContainer" parent="UserInterfaceLayer/UserInterface/MainMargins/Inventory"]
+layout_mode = 2
+offset_left = 136.0
+offset_right = 268.0
+offset_bottom = 64.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="TextureRect2" type="TextureRect" parent="UserInterfaceLayer/UserInterface/MainMargins/Inventory/TradeGoods"]
+layout_mode = 2
+offset_right = 64.0
+offset_bottom = 64.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource("7_1i3hs")
+
+[node name="Label" type="Label" parent="UserInterfaceLayer/UserInterface/MainMargins/Inventory/TradeGoods"]
+custom_minimum_size = Vector2i(64, 0)
+layout_mode = 2
+offset_left = 68.0
+offset_top = 19.0
+offset_right = 132.0
+offset_bottom = 45.0
+text = "XXXXXX"
+horizontal_alignment = 1
+vertical_alignment = 1
+text_overrun_behavior = 1
