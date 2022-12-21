@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Delve.Structures;
 
-public class StructureDescription {
+public class StructureDefinition {
     public string InternalName { get; init; } = null!;
     public string DisplayName { get; init; } = null!;
 
@@ -37,23 +37,23 @@ public class StructureDescription {
     public bool HousesUnits => Housing is not null;
 
     
-    public Result<StructureInstance> Create(GameMap map, Tile tile) {
+    public Result<Structure> Create(GameMap map, Tile tile) {
         if (1 < MinSize || 1 > MaxSize)
-            return new Result<StructureInstance>(new ArgumentOutOfRangeException());
-        var result = new StructureInstance(this, tile);
+            return new Result<Structure>(new ArgumentOutOfRangeException());
+        var result = new Structure(this, tile);
         tile.Structure = result;
         
-        if (!map.Structures.ContainsKey(this))
-            map.Structures.Add(this, new List<StructureInstance>());
+        if (map.Structures.ContainsKey(this) == false)
+            map.Structures.Add(this, new List<Structure>());
         map.Structures[this].Add(result);
-        return new Result<StructureInstance>(result);
+        return new Result<Structure>(result);
     }
     
-    public Result<StructureInstance> Create(GameMap map, HashSet<Tile> tiles) {
+    public Result<Structure> Create(GameMap map, HashSet<Tile> tiles) {
         if (tiles.Count < MinSize || tiles.Count > MaxSize)
-            return new Result<StructureInstance>(new ArgumentOutOfRangeException());
+            return new Result<Structure>(new ArgumentOutOfRangeException());
         var tilesList = tiles.ToList();
-        var result = new StructureInstance(this, tiles);
+        var result = new Structure(this, tiles);
         foreach (var t in tilesList)
             t.Structure = result;
         for (var i = 0; i < tilesList.Count - 1; i++)
@@ -61,9 +61,9 @@ public class StructureDescription {
             tilesList[i].Connect(tilesList[j]);
         
         
-        if (!map.Structures.ContainsKey(this))
-            map.Structures.Add(this, new List<StructureInstance>());
+        if (map.Structures.ContainsKey(this) == false)
+            map.Structures.Add(this, new List<Structure>());
         map.Structures[this].Add(result);
-        return new Result<StructureInstance>(result);
+        return new Result<Structure>(result);
     }
 }

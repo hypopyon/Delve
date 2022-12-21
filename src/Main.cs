@@ -12,7 +12,7 @@ public partial class Main : Node2D {
 	CameraController cameraController = null!;
 	UserInterface userInterface = null!;
 	
-	public GameMeta Meta { get; private set; }
+	public Definitions Definitions { get; private set; }
 	public GameState State { get; private set; }
 	public GameMap Map { get; private set; }
 
@@ -23,13 +23,13 @@ public partial class Main : Node2D {
 
 
 	public Main() {
-		Meta = new GameMeta();
+		Definitions = new Definitions();
 		State = new GameState();
 		State.Turn = TurnState.Explore;
 		Map = new GameMap();
 
 		var entrance = Map.GetTile(Vector2i.Zero).Value;
-		Meta.Structures.Entrance.Create(Map, entrance);
+		Definitions.Structures.Entrance.Create(Map, entrance);
 		
 		rng = new RandomNumberGenerator();
 	}
@@ -62,13 +62,13 @@ public partial class Main : Node2D {
 
 			Result? explore = null;
 
-			if (State.Turn == TurnState.Explore && !State.InCombat) {
+			if (State.Turn == TurnState.Explore && State.InCombat == false) {
 				TryExplore();
 			}
 		}
 	}
 
-	void TryExplore() {
+	Result TryExplore() {
 		Result? exploreResult = null;
 		if (hoverTile is not null) {
 			if (hoverTile.Empty) {
@@ -82,8 +82,8 @@ public partial class Main : Node2D {
 			} else if (hoverAdjacentTile is not null && hoverAdjacentTile.Empty)
 				exploreResult = Explore(hoverTile, hoverAdjacentTile);
 		}
-		if (exploreResult is not null && exploreResult.Value.IsSuccessful == false)
-			throw exploreResult.Value.Error;
+
+		return exploreResult ?? Result.Success;
 	}
 	
 	void GetNodeAssign<T>(string path, out T result) => NodeExtensions.GetNodeAssign(this, path, out result);

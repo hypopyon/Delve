@@ -3,10 +3,10 @@ using Delve.Structures;
 
 namespace Delve; 
 
-public partial class GameMeta {
-    public class StructuresMeta {
+public partial class Definitions {
+    public class StructureDefinitions {
         
-        public StructureDescription
+        public StructureDefinition
             // Special
             Entrance,
             // Natural formations
@@ -14,27 +14,27 @@ public partial class GameMeta {
             // Buildings
             Barracks;
 
-        public StructuresMeta() {
-            Entrance = new StructureDescription {
+        public StructureDefinitions() {
+            Entrance = new StructureDefinition {
                 Name = "Entrance",
                 Texture = Textures.Tiles.Entrance,
             };
-            Cavern = new StructureDescription {
+            Cavern = new StructureDefinition {
                 Name = "Cavern",
                 Texture = Textures.Tiles.Cavern,
                 MaxSize = 4,
             };
-            Forest = new StructureDescription {
+            Forest = new StructureDefinition {
                 Name = "Forest",
                 Texture = Textures.Tiles.Forest,
                 Effect = null
             };
-            CrystalCavern = new StructureDescription {
+            CrystalCavern = new StructureDefinition {
                 Name = "Crystal Cavern",
                 Texture = Textures.Tiles.CrystalCavern,
                 MaxSize = 2,
             };
-            Barracks = new StructureDescription {
+            Barracks = new StructureDefinition {
                 Name = "Barracks",
                 Texture = Textures.Tiles.Cavern,
                 Build = new BuildBehavior {
@@ -47,11 +47,6 @@ public partial class GameMeta {
                     }
                 }
             };
-            
-            
-            
-            
-            
         }
     }
 }

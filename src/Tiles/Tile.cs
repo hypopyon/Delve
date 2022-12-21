@@ -12,7 +12,7 @@ public class Tile {
     public int X => Position.x;
     public int Y => Position.y;
     
-    bool Valid {
+    public bool Valid {
         get {
             var tile = map.GetTile(Position);
             return tile ? tile.Value == this : false;
@@ -20,11 +20,11 @@ public class Tile {
     }
 
     public bool Empty => Structure is null;
-    public Texture2D Texture => Structure is not null ? Structure.Description.Texture : Textures.Tiles.Unexplored;
+    public Texture2D Texture => Structure is not null ? Structure.Definition.Texture : Textures.Tiles.Unexplored;
 
     public Tunnels Tunnels;
 
-    public StructureInstance? Structure;
+    public Structure? Structure;
     //public List<CombatEntity> CombatEntities;
     
 
@@ -66,7 +66,7 @@ public class Tile {
     public Result<Optional<Direction>> CheckAdjacency(Tile other) {
         if (this == other)
             return new Result<Optional<Direction>>(new ArgumentException(null, nameof(other)));
-        if (!Valid || !other.Valid)
+        if (Valid == false || other.Valid == false)
             return new Result<Optional<Direction>>(new InvalidOperationException());
         return (X == other.X, Y == other.Y) switch {
             (true, false) when Y - 1 == other.Y => Optional.Some(Direction.Up),
@@ -78,7 +78,7 @@ public class Tile {
     }
 
     public Result<Tile> GetAdjacent(Direction dir) {
-        if (!Valid)
+        if (Valid == false)
             return new Result<Tile>(new InvalidOperationException());
 
         var adjacentPosition = Position + dir.ToUnitVector();
@@ -101,7 +101,7 @@ public class Tile {
 
         void CountAdjacent(Direction direction) {
             var getAdjacent = GetAdjacent(direction);
-            if (!getAdjacent.IsSuccessful || getAdjacent.Value.Empty) return;
+            if (getAdjacent.IsSuccessful == false || getAdjacent.Value.Empty) return;
             result.Count++;
             result.FirstAdjacentStructure ??= getAdjacent.Value;
         }

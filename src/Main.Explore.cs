@@ -8,7 +8,7 @@ namespace Delve;
 
 public partial class Main {
 	public Result Explore(Tile source, Tile destination) {
-		if (!source.CheckAdjacency(destination).IsSuccessful || source.Empty || !destination.Empty)
+		if (source.CheckAdjacency(destination).IsSuccessful == false || source.Empty || !destination.Empty)
 			return new Result(new ArgumentException());
 
 		var pull = Cards.PullSingle(rng, new CardPullOptions {
@@ -17,9 +17,10 @@ public partial class Main {
 			BigJoker = true
 		});
 
+		
 		GD.Print(pull.GetName());
 
-		Result<StructureInstance>? structureResult = null;
+		Result<Structure>? structureResult = null;
 		var placeSingleCavern = false;
 		switch (pull) {
 			case Card.LittleJoker:
@@ -42,13 +43,16 @@ public partial class Main {
 					case CardSuit.Clubs:
 						switch (value) {
 							case 1:
-								structureResult = Meta.Structures.Forest.Create(Map, destination);
+								structureResult = Definitions.Structures.Forest.Create(Map, destination);
 								break;
 							case 5:
-								structureResult = Meta.Structures.Cavern.Create(Map, destination);
+								structureResult = Definitions.Structures.Cavern.Create(Map, destination);
 								break;
 							case 6:
-								structureResult = Meta.Structures.CrystalCavern.Create(Map, destination);
+								structureResult = Definitions.Structures.CrystalCavern.Create(Map, destination);
+								break;
+							default:
+								placeSingleCavern = true;
 								break;
 						}
 						break;
@@ -64,7 +68,11 @@ public partial class Main {
 		if (placeSingleCavern) {
 			if (destination.Y == Map.BottommostTile)
 				Map.ExpandDownwards();
-			structureResult = Meta.Structures.Cavern.Create(Map, destination).Value;
+			var placementBuffer = new StructurePlacementBuffer(Map);
+			placementBuffer.Add(destination.Position);
+			placementBuffer.Add(destination.Position + Direction.Down.ToUnitVector());
+			var tiles = placementBuffer.Finish().Value;
+			structureResult = Definitions.Structures.Cavern.Create(Map, tiles);
 		}
 
 		if (structureResult is not null) {

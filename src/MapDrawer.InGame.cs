@@ -26,7 +26,7 @@ public partial class MapDrawer {
         
     void DrawConnectors(Vector2i position) {
         var getResult = Map.GetTile(position);
-        if (!getResult.IsSuccessful)
+        if (getResult.IsSuccessful == false)
             throw new InvalidOperationException();
         var tile = getResult.Value;
         var textureSize = Textures.Tunnel.GetSize();
@@ -63,7 +63,7 @@ public partial class MapDrawer {
 
     void DrawTile(Vector2i position) {
         var getResult = Map.GetTile(position);
-        if (!getResult.IsSuccessful)
+        if (getResult.IsSuccessful == false)
             throw new InvalidOperationException();
         var tile = getResult.Value;
         var pos = new Vector2(position.x * Textures.SpacedTileWidth, position.y * Textures.SpacedTileHeight);
@@ -75,13 +75,13 @@ public partial class MapDrawer {
         var font = Fonts.Mono;
         var actualHeightRatio = Fonts.MonoActualHeightRatio;
         var fontSize = 16;
-        var stringSize = font.GetStringSize(tile.Structure.Description.DisplayName, fontSize: fontSize);
+        var stringSize = font.GetStringSize(tile.Structure.Definition.DisplayName, fontSize: fontSize);
         stringSize.y = Mathf.Floor(fontSize * actualHeightRatio);
             
         this.DrawStringZoomCorrected(
             font,
             pos + new Vector2(-stringSize.x / 2, stringSize.y / 2),
-            tile.Structure.Description.DisplayName,
+            tile.Structure.Definition.DisplayName,
             modulate: Colors.White,
             fontSize: fontSize);
     }

@@ -17,7 +17,7 @@ public class GameMap {
 
     Tile[,] tiles;
 
-    public Dictionary<StructureDescription, List<StructureInstance>> Structures { get; }
+    public Dictionary<StructureDefinition, List<Structure>> Structures { get; }
 
     public int BottommostTile {
         get {
@@ -29,7 +29,7 @@ public class GameMap {
     }
 
 public GameMap() {
-        Structures = new Dictionary<StructureDescription, List<StructureInstance>>();
+        Structures = new Dictionary<StructureDefinition, List<Structure>>();
         tiles = new Tile[TilesWidth, InitialTilesHeight];
         for (var i = 0; i < TilesWidth; i++)
         for (var j = 0; j < InitialTilesHeight; j++)

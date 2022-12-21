@@ -3,11 +3,11 @@ using Delve.Units;
 
 namespace Delve; 
 
-public partial class GameMeta {
-    public class UnitsMeta {
+public partial class Definitions {
+    public class UnitDefinitions {
 
 
-        public UnitsMeta() {
+        public UnitDefinitions() {
             
         }
     }
